@@ -28,6 +28,13 @@ public class BookController
         this.searchBookResponseService = searchBookResponseService;
     }
     //TODO: Criar novo livro
+
+    /**
+     * Responsible for creating a new book
+     *
+     * @param bookWrapper
+     * @return
+     */
     @PostMapping("/book")
     public ResponseEntity<?> createNewBook(@RequestBody BookWrapper bookWrapper){
         bookService.saveBook(bookWrapper.getBook());
@@ -35,12 +42,26 @@ public class BookController
     }
 
     //TODO: Todos os livros cadastrados
+
+    /**
+     * Responsible for returning all books registered
+     *
+     * @return all books registered
+     */
     @GetMapping("/allBooks")
-    public ResponseEntity<?> getAllBooks(){
+    public ResponseEntity<?> getAllBooks()
+    {
         return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }
 
     //TODO: Exibir dados de determinado livro através do id
+
+    /**
+     * Responsible for the recovery of the data of the book according to the identifier
+     *
+     * @param bookId book identifier
+     * @return a {@link ResponseEntity} containing a response of type {@link BookWrapper} and Http status "OK"
+     */
     @GetMapping(value = "/books/{bookId}")
     public ResponseEntity<?> findBookById(@PathVariable long bookId)
     {
@@ -57,8 +78,16 @@ public class BookController
     }
 
     //TODO: Buscar dados de um site e exibir como json (faltando isbn e id)
+
+    /**
+     * Responsible for connecting to specified URL, extracting HTML elements and returning in json format.
+     *
+     * @return a {@link ResponseEntity} containing a response of type {@link SearchBookResponseService} and Http status "OK"
+     * @throws IOException
+     */
     @GetMapping("books")
-    public ResponseEntity<?> searchBooks() throws IOException {
+    public ResponseEntity<?> searchBooks() throws IOException
+    {
         Document document = Jsoup.connect("https://kotlinlang.org/docs/books.html").timeout(6000).get();
 
         final List<Book> books = searchBookResponseService.splitSections(document);
